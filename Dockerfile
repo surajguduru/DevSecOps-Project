@@ -1,26 +1,23 @@
-# 1. Build stage
-FROM maven:3.9.6-eclipse-temurin-17 AS builder
+# Stage 1: Build JAR using Maven
+FROM maven:3.9.5-openjdk-17 AS build
 WORKDIR /app
 
-# Copy pom first for caching dependencies
+# Copy pom.xml and source code
 COPY pom.xml .
-RUN mvn dependency:go-offline
-
-# Copy source code
 COPY src ./src
 
-# Build JAR
-RUN mvn clean package -DskipTests
+# Build the project
+RUN mvn clean package -DskipTests`
 
-# 2. Runtime stage
-FROM eclipse-temurin:17-jre-alpine
+# Stage 2: Runtime
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-# Copy the built JAR from builder stage
-COPY --from=builder /app/target/image-editor-1.0-SNAPSHOT.jar app.jar
+# Copy the JAR from build stage
+COPY --from=build /app/target/image-editor-1.0-SNAPSHOT.jar app.jar
 
-# Expose the port your app uses
+# Expose port for CI container test
 EXPOSE 8080
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Start the HealthServer for CI test
+CMD ["java", "-cp", "app.jar:.", "com.example.HealthServer"]
