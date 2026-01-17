@@ -1,0 +1,14 @@
+/target/
+*.iml
+.idea/
+.vscode/
+.DS_Store
+*.class
+
+# Maven wrapper and scripts
+/.mvn/
+mvnw
+mvnw.cmd
+
+# Logs
+*.log
