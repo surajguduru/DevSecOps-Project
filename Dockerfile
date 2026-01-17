@@ -1,5 +1,5 @@
 # Stage 1: Build JAR using Maven
-FROM maven:3.9.5-openjdk-17 AS build
+FROM maven:3.9.5-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copy pom.xml and source code
@@ -7,7 +7,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Build the project
-RUN mvn clean package -DskipTests`
+RUN mvn clean package -DskipTests
 
 # Stage 2: Runtime
 FROM eclipse-temurin:17-jdk-alpine
