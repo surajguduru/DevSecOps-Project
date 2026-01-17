@@ -26,11 +26,11 @@ jobs:
       with:
         distribution: temurin
         java-version: '17'
-        cache: gradle
+        cache: maven
 
     # 3. Linting (Checkstyle)
     - name: Run Checkstyle (Linting)
-      run: ./gradlew checkstyleMain checkstyleTest
+      run: mvn checkstyle:check
       continue-on-error: true
 
     # 4. SAST – CodeQL
