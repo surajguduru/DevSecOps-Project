@@ -9,7 +9,7 @@ import java.net.InetSocketAddress;
 public class HealthServer {
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-        server.createContext("/health", new HttpHandler() {
+        server.createContext("/", new HttpHandler() {
             @Override
             public void handle(HttpExchange exchange) throws java.io.IOException {
                 String response = "OK";
