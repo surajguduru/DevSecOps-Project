@@ -1,13 +1,19 @@
 # 1. Build stage
-FROM gradle:8.4-jdk17 AS build
+FROM maven:3.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Copy everything into the container
-COPY . .
+# Copy pom.xml first (better layer caching)
+COPY pom.xml .
 
-# Build the application (skip tests, already done in CI)
-RUN gradle clean build -x test
+# Download dependencies
+RUN mvn dependency:go-offline -B
+
+# Copy source code
+COPY src src
+
+# Build the application (tests already run in CI)
+RUN mvn clean package -DskipTests
 
 
 # 2. Runtime stage
@@ -15,11 +21,9 @@ FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
-# Copy only the built JAR from the build stage
-COPY --from=build /app/build/libs/*.jar app.jar
+# Copy the built JAR from the build stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Expose application port
 EXPOSE 8080
 
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
