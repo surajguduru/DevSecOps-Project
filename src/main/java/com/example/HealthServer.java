@@ -12,7 +12,7 @@ public class HealthServer {
         server.createContext("/", new HttpHandler() {
             @Override
             public void handle(HttpExchange exchange) throws java.io.IOException {
-                String response = "OK";
+                String response = "The server is healthy!";
                 exchange.sendResponseHeaders(200, response.length());
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());

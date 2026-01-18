@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: myapp
-          image: ${{ secrets.DOCKER_USERNAME }}/myapp:latest
+          image: surajguduru1/myapp:latest
           ports:
             - containerPort: 8080
