@@ -1,22 +1,22 @@
-name: CD - Deploy to Kubernetes
+# name: CD - Deploy to Kubernetes
 
-on:
-  workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
+# on:
+#   workflow_run:
+#     workflows: ["CI"]
+#     types:
+#       - completed
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Deploy to Kubernetes via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          script: |
-            kubectl rollout restart deployment myapp-deployment
-            kubectl rollout status deployment myapp-deployment
+#     steps:
+#       - name: Deploy to Kubernetes via SSH
+#         uses: appleboy/ssh-action@v1.0.3
+#         with:
+#           host: ${{ secrets.EC2_HOST }}
+#           username: ${{ secrets.EC2_USER }}
+#           key: ${{ secrets.EC2_KEY }}
+#           script: |
+#             kubectl rollout restart deployment myapp-deployment
+#             kubectl rollout status deployment myapp-deployment
