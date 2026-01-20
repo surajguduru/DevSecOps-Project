@@ -38,7 +38,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>com.example.imageeditor.ImageEditorApp</mainClass>
+                    <mainClass>com.example.ImageEditorServer</mainClass>
                 </configuration>
             </plugin>
 
