@@ -23,11 +23,29 @@ public class ImageEditorServer {
 
         // Dummy root endpoint
         server.createContext("/", exchange -> {
-            String response = "App is running!";
-            exchange.getResponseHeaders().set("Content-Type", "text/plain");
-            exchange.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes(StandardCharsets.UTF_8));
+            try (InputStream is = ImageEditorServer.class.getClassLoader().getResourceAsStream("index.html")) {
+                if (is == null) {
+                    String response = "File not found";
+                    exchange.getResponseHeaders().set("Content-Type", "text/plain");
+                    exchange.sendResponseHeaders(404, response.getBytes(StandardCharsets.UTF_8).length);
+                    try (OutputStream os = exchange.getResponseBody()) {
+                        os.write(response.getBytes(StandardCharsets.UTF_8));
+                    }
+                    return;
+                }
+                byte[] content = is.readAllBytes();
+                exchange.getResponseHeaders().set("Content-Type", "text/html");
+                exchange.sendResponseHeaders(200, content.length);
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(content);
+                }
+            } catch (IOException e) {
+                String response = "Internal server error";
+                exchange.getResponseHeaders().set("Content-Type", "text/plain");
+                exchange.sendResponseHeaders(500, response.getBytes(StandardCharsets.UTF_8).length);
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(response.getBytes(StandardCharsets.UTF_8));
+                }
             }
         });
 
