@@ -17,5 +17,6 @@ spec:
       containers:
         - name: myapp
           image: surajguduru1/myapp:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
